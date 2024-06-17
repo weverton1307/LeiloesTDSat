@@ -163,6 +163,7 @@ public class cadastroVIEW extends javax.swing.JFrame {
                 produtodao.cadastrarProduto(produto);
                 cadastroNome.setText("");
                 cadastroValor.setText("");
+                JOptionPane.showMessageDialog(null, "Cadastro realizado com sucesso!");
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Por favor, digite um valor inteiro");
