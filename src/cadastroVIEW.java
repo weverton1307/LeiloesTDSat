@@ -1,8 +1,10 @@
+
+import javax.swing.JOptionPane;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author Adm
@@ -135,28 +137,42 @@ public class cadastroVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cadastroNomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastroNomeActionPerformed
-        
-        
+
+
     }//GEN-LAST:event_cadastroNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        ProdutosDTO produto = new ProdutosDTO();
-        String nome = cadastroNome.getText();
-        String valor = cadastroValor.getText();
-        String status = "A Venda";
-        produto.setNome(nome);
-        produto.setValor(Integer.parseInt(valor));
-        produto.setStatus(status);
-        
-        ProdutosDAO produtodao = new ProdutosDAO();
-        produtodao.cadastrarProduto(produto);
-        cadastroNome.setText("");
-        cadastroValor.setText("");
-        
+
+        try {
+            if (cadastroNome.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Por favor, digite o nome do produto");
+            } else if (cadastroValor.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Por favor, digite o valor do produto");
+            } else if (Integer.parseInt(cadastroValor.getText()) <= 0) {
+                JOptionPane.showMessageDialog(null, "Por favor, digite um valor maior que zero");
+            } else {
+                ProdutosDTO produto = new ProdutosDTO();
+                String nome = cadastroNome.getText();
+                String valor = cadastroValor.getText();
+                String status = "A Venda";
+                produto.setNome(nome);
+                produto.setValor(Integer.parseInt(valor));
+                produto.setStatus(status);
+
+                ProdutosDAO produtodao = new ProdutosDAO();
+                produtodao.cadastrarProduto(produto);
+                cadastroNome.setText("");
+                cadastroValor.setText("");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Por favor, digite um valor inteiro");
+        }
+
+
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
-        listagemVIEW listagem = new listagemVIEW(); 
+        listagemVIEW listagem = new listagemVIEW();
         listagem.setVisible(true);
     }//GEN-LAST:event_btnProdutosActionPerformed
 
