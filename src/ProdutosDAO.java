@@ -25,7 +25,7 @@ public class ProdutosDAO {
     public int cadastrarProduto(ProdutosDTO produto) {
         conectaDAO cDAO = new conectaDAO();
         conn = cDAO.connectDB();
-        
+
         try {
             ps = conn.prepareStatement("INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?)");
             ps.setString(1, produto.getNome());
@@ -37,9 +37,13 @@ public class ProdutosDAO {
             System.out.println("Erro ao cadastrar " + ex.getMessage());
             return ex.getErrorCode();
         } finally {
-           try {
-                if (ps != null) ps.close();
-                if (conn != null) cDAO.desconectar();
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    cDAO.desconectar();
+                }
             } catch (SQLException ex) {
                 System.out.println("Erro ao fechar recursos: " + ex.getMessage());
             }
@@ -47,8 +51,36 @@ public class ProdutosDAO {
     }
 
     public ArrayList<ProdutosDTO> listarProdutos() {
+        conectaDAO cDAO = new conectaDAO();
+        conn = cDAO.connectDB();
+        try {
+            ps = conn.prepareStatement("SELECT * FROM produtos");
+            resultset = ps.executeQuery();
+            while (resultset.next()) {
+                ProdutosDTO produto = new ProdutosDTO();
+                produto.setId(resultset.getInt("id"));
+                produto.setNome(resultset.getString("nome"));
+                produto.setValor(resultset.getInt("valor"));
+                produto.setStatus(resultset.getString("status"));
+                listagem.add(produto);
+            }
+            return listagem;
+        } catch (SQLException e) {
+            System.out.println("Erro ao listar " + e.getMessage());
+            return null;
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    cDAO.desconectar();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Erro ao fechar recursos: " + ex.getMessage());
+            }
+        }
 
-        return listagem;
     }
 
 }
