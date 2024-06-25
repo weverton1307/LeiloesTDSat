@@ -82,5 +82,28 @@ public class ProdutosDAO {
         }
 
     }
-
+    public int venderProduto(int id) {
+        conectaDAO cDAO = new conectaDAO();
+        conn = cDAO.connectDB();
+        try {
+            ps = conn.prepareStatement("UPDATE Produtos SET status = ? WHERE id = ?");
+            ps.setString(1, "Vendido");
+            ps.setInt(2, id);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Erro: " + e.getMessage());
+            return e.getErrorCode();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    cDAO.desconectar();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Erro: " + ex.getMessage());
+            }
+        }
+    }
 }
