@@ -1,6 +1,7 @@
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -149,12 +150,23 @@ public class listagemVIEW extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
-        String id = id_produto_venda.getText();
+        try {
+            if (id_produto_venda.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Por favor, digite o id do produto");
+            } else if (Integer.parseInt(id_produto_venda.getText()) <= 0) {
+                JOptionPane.showMessageDialog(null, "Por favor, digite um número maior que zero");
+            }else{
+             String id = id_produto_venda.getText();
 
-        ProdutosDAO produtosdao = new ProdutosDAO();
+            ProdutosDAO produtosdao = new ProdutosDAO();
 
-        //produtosdao.venderProduto(Integer.parseInt(id));
-        listarProdutos();
+            produtosdao.venderProduto(Integer.parseInt(id));
+            id_produto_venda.setText("");
+            listarProdutos();   
+            }         
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Por favor, digite um número inteiro");
+        }
     }//GEN-LAST:event_btnVenderActionPerformed
 
     private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
