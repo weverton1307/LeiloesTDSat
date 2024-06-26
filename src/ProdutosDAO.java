@@ -82,5 +82,65 @@ public class ProdutosDAO {
         }
 
     }
+    public int venderProduto(int id) {
+        conectaDAO cDAO = new conectaDAO();
+        conn = cDAO.connectDB();
+        try {
+            ps = conn.prepareStatement("UPDATE Produtos SET status = ? WHERE id = ?");
+            ps.setString(1, "Vendido");
+            ps.setInt(2, id);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Erro: " + e.getMessage());
+            return e.getErrorCode();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    cDAO.desconectar();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Erro: " + ex.getMessage());
+            }
+        }
+    }
+            public ArrayList<ProdutosDTO> listarProdutosVendidos() {
+        conectaDAO cDAO = new conectaDAO();
+        conn = cDAO.connectDB();
+        ArrayList<ProdutosDTO> listaVendidos = new ArrayList<>();
+        try {
+            ps = conn.prepareStatement("SELECT * FROM produtos WHERE status = ?");
+            ps.setString(1, "Vendido");
+            resultset = ps.executeQuery();
+            while (resultset.next()) {
+                ProdutosDTO produto = new ProdutosDTO();
+                produto.setId(resultset.getInt("id"));
+                produto.setNome(resultset.getString("nome"));
+                produto.setStatus(resultset.getString("status"));
+                produto.setValor(resultset.getInt("valor"));
+                listaVendidos.add(produto);
+            }
+            return listaVendidos;
 
+        } catch (SQLException e) {
+            System.out.println("Erro: " + e.getMessage());
+            return null;
+        } finally {
+            try {
+                 if(resultset != null){
+                  resultset.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    cDAO.desconectar();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Erro ao fechar recursos: " + ex.getMessage());
+            }
+        }
+    }
 }
