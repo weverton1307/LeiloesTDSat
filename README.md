@@ -4,4 +4,4 @@ Esse sistema possui as funcionalidades de cadastramento de produto, realizar ven
 ## Tecnologias utilizadas:
 - Linguagem de programação Java
 - Banco de dados MySQL Workbench
-Projeto criado por Weverton Oliveira Marinho.
+
